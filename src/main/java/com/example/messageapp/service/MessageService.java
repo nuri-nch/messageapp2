@@ -13,28 +13,52 @@ public class MessageService {
     private final List<MessagePersona> messages = new ArrayList<>();
     private Long nextId = 1L;
 
-    // Constructor con un mensaje de prueba
-    public MessageService(){
-    messages.add(new MessagePersona(nextId++, "nombreuser", "este es el mensaje", "1/1/2025"));
-}
+    // Constructor 
+    public MessageService() {
+        
+        MessagePersona message1 = new MessagePersona("Carlos", "Mensaje de prueba", LocalDateTime.now());
+        message1.setId(nextId++);
+        messages.add(message1);
 
-public List<MessagePersona> getAllMessages() {
-    System.out.println(messages);  // Añadir esta línea para depurar
-    return messages;
-}
-
-    public Optional<MessagePersona> getMessageById(Long id) {
-        return messages.stream().filter(m -> m.getId().equals(id)).findFirst();
+        
+        MessagePersona message2 = new MessagePersona("Ana", "aqui va mensaje", LocalDateTime.now());
+        message2.setId(nextId++);
+        messages.add(message2);
     }
 
+    // Obtener todos los mensajes
+    public List<MessagePersona> getAllMessages() {
+        System.out.println("Mensajes almacenados: " + messages);
+        return messages;
+    }
+
+    // Obtener mensaje por ID
+    public Optional<MessagePersona> getMessageById(Long id) {
+        return messages.stream()
+                .filter(m -> m.getId().equals(id))
+                .findFirst();
+    }
+
+    // Crear nuevo mensaje
     public MessagePersona addMessage(MessagePersona message) {
         message.setId(nextId++);
-        message.setFechaCreacion(LocalDateTime.now()); // Agrega la fecha automáticamente
+        if (message.getFechaCreacion() == null) {
+            message.setFechaCreacion(LocalDateTime.now());
+        }
         messages.add(message);
+        System.out.println("Mensaje añadido: " + message);
         return message;
     }
 
+    // Eliminar mensaje por ID
     public boolean deleteMessage(Long id) {
-        return messages.removeIf(m -> m.getId().equals(id));
+        Optional<MessagePersona> mensajeEncontrado = getMessageById(id);
+        if (mensajeEncontrado.isPresent()) {
+            messages.remove(mensajeEncontrado.get());
+            System.out.println("Mensaje eliminado con id: " + id);
+            return true;
+        }
+        System.out.println("Mensaje con id " + id + " no encontrado.");
+        return false;
     }
 }

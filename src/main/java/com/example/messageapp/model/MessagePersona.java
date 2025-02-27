@@ -1,20 +1,22 @@
 package com.example.messageapp.model;
 
+import java.time.LocalDateTime;
+
 public class MessagePersona {
     private Long id;
     private String user;
     private String mensaje;
-    private String fechaCreacion;
+    private LocalDateTime fechaCreacion;
 
     // Constructor vacío
-    public MessagePersona() {}
+    public MessagePersona() {
+    }
 
     // Constructor con parámetros
-    public MessagePersona(Long id, String user, String mensaje, String fechaCreacion) {
-        this.id = id;
+    public MessagePersona(String user, String mensaje, LocalDateTime fechaCreacion) {
         this.user = user;
         this.mensaje = mensaje;
-        this.fechaCreacion = fechaCreacion;
+        this.fechaCreacion = fechaCreacion != null ? fechaCreacion : LocalDateTime.now(); // Si no se envía, asigna la fecha actual
     }
 
     // Getters y Setters
@@ -42,11 +44,21 @@ public class MessagePersona {
         this.mensaje = mensaje;
     }
 
-    public String getFechaCreacion() {
+    public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
     }
 
-    public void setFechaCreacion(String fechaCreacion) {
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
+    }
+
+    @Override
+    public String toString() {
+        return "MessagePersona{" +
+                "id=" + id +
+                ", user='" + user + '\'' +
+                ", mensaje='" + mensaje + '\'' +
+                ", fechaCreacion=" + fechaCreacion +
+                '}';
     }
 }
